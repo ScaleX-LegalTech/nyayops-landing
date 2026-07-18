@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+import '@fontsource/outfit/500.css';
+import '@fontsource/outfit/600.css';
+import '@fontsource/outfit/700.css';
+import '@fontsource/public-sans/400.css';
+import '@fontsource/public-sans/500.css';
+import '@fontsource/public-sans/600.css';
+import '@fontsource/public-sans/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'NyayOps — Legal Operations, Run Like a Ledger',
+  description = 'NyayOps is the case-management system for legal-operations teams: a governed workflow from intake to disposal, versioned documents, role-based access, and an audit trail on every action.',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0F172A" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      const revealEls = document.querySelectorAll<HTMLElement>('.reveal');
+      if (revealEls.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+        );
+        revealEls.forEach((el, i) => {
+          el.style.animationDelay = `${Math.min(i % 4, 3) * 60}ms`;
+          io.observe(el);
+        });
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+
+      const navToggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+      const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
+      navToggle?.addEventListener('click', () => {
+        const open = mobileNav?.dataset.open === 'true';
+        if (mobileNav) mobileNav.dataset.open = open ? 'false' : 'true';
+        navToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+    </script>
+  </body>
+</html>

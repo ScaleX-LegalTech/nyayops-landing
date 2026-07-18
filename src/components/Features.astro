@@ -1,0 +1,45 @@
+---
+const features = [
+  {
+    n: '01',
+    title: 'A workflow that can’t be skipped',
+    body: 'Draft, assigned, in progress, ready for review, under review, approved or rejected — each case moves through a strict state machine. An invalid transition is rejected outright, not just flagged for later.',
+  },
+  {
+    n: '02',
+    title: 'Documents, versioned and scanned',
+    body: 'Every upload gets its own version and a virus scan before anyone can trust it. Nothing is silently overwritten; the prior version is always still there.',
+  },
+  {
+    n: '03',
+    title: 'Access scoped to the role',
+    body: 'Org admins, branch managers, case reviewers, and document clerks each see exactly what their role and branch permit — nothing more.',
+  },
+  {
+    n: '04',
+    title: 'An audit trail that isn’t optional',
+    body: 'Every workflow action is recorded — who did what, and when. It’s first-class record, not a debug log someone forgot to turn off.',
+  },
+];
+---
+
+<section class="bg-surface py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Built for how casework actually moves.</h2>
+      <p class="mt-4 text-lg text-ink-muted">Not a generic project tracker with legal labels stuck on.</p>
+    </div>
+
+    <div class="mt-16 divide-y divide-border border-t border-border">
+      {
+        features.map((f) => (
+          <div class="reveal grid gap-x-10 gap-y-3 py-10 sm:grid-cols-[3rem_1fr_1.1fr] sm:items-baseline">
+            <span class="type-mono text-sm text-ink-muted">{f.n}</span>
+            <h3 class="font-display text-xl font-semibold text-ink sm:text-2xl">{f.title}</h3>
+            <p class="max-w-md text-base leading-relaxed text-ink-muted sm:col-start-3">{f.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

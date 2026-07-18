@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/*
+  Brand-register surface (see reference: Bloomberg Terminal navy-authority,
+  Indian court cause-list/gazette ruled-ledger typography, Basecamp real-screenshot
+  restraint). Same tokens as frontend/DESIGN.md; this page is allowed a higher
+  display-heading ceiling (≤6rem) than the product surface's 3.5rem, since a landing
+  hero earns more weight than a page title.
+*/
+@theme {
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --radius-card: 12px;
+  --radius-control: 8px;
+
+  --shadow-pop: 0 8px 24px oklch(from var(--color-shell) l c h / 0.18);
+
+  --z-dropdown: 30;
+  --z-sticky: 40;
+  --z-drawer: 50;
+  --z-modal: 60;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+  }
+
+  th, td, .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Staggered fade-up for section reveals. Content is visible by default always —
+     the animation is a pure enhancement layered on top when JS adds .is-visible via
+     IntersectionObserver. Never gate visibility on the class: full-page/headless
+     captures and paused-tab renders don't dispatch scroll/intersection events, so a
+     opacity:0-until-JS default would ship those sections permanently blank. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .reveal.is-visible {
+    animation: rise 0.42s var(--ease-out-quint);
+  }
+
+  .type-mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.03em;
+  }
+
+  /* The page's one decorative rule motif — earned by the literal ledger/cause-list
+     reference, not a generic underline flourish. Used once per major section only. */
+  .rule-ledger {
+    height: 1px;
+    background: var(--color-border-strong);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--color-ink-muted);
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-control);
+    padding: 3px 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

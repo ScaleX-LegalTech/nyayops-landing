@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import dashboardShot from '../assets/screenshots/dashboard.png';
+---
+
+<section class="bg-bg py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">
+        A pulse on the caseload, not a pile of tabs.
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-ink">
+        New cases, pending reviews, overdue matters, and what needs scrutiny —
+        on one screen, scoped to the firm or to what's yours today.
+      </p>
+    </div>
+
+    <div class="reveal mt-12 overflow-hidden rounded-card border border-border bg-surface p-2 shadow-pop sm:p-3">
+      <Image
+        src={dashboardShot}
+        alt="NyayOps dashboard showing new cases, pending reviews, overdue cases, a case-status breakdown, and a court-wise caseload chart"
+        class="rounded-[8px]"
+        widths={[640, 1000, 1600]}
+        sizes="(min-width: 1152px) 1152px, 92vw"
+      />
+    </div>
+  </div>
+</section>

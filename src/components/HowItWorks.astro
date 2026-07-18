@@ -1,0 +1,71 @@
+---
+interface Stage {
+  n: string;
+  name: string;
+  note: string;
+}
+
+const stages: Stage[] = [
+  { n: '01', name: 'Collection', note: 'Matter opened, source documents gathered.' },
+  { n: '02', name: 'Scrutiny', note: 'Checked for completeness before it goes anywhere.' },
+  { n: '03', name: 'Filed', note: 'Lodged with the court — a gated stage, can’t be skipped.' },
+  { n: '04', name: 'CNR Linked', note: 'Tied to its official case record.' },
+  { n: '05', name: 'Research / Draft', note: 'Briefs and arguments prepared.' },
+  { n: '06', name: 'Hearing', note: 'Every listed date tracked to deadline.' },
+  { n: '07', name: 'Disposed', note: 'Closed, full record intact.' },
+];
+---
+
+<section id="how-it-works" class="bg-shell py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-shell-ink sm:text-4xl">
+        One governed lifecycle, start to disposed.
+      </h2>
+      <p class="mt-4 text-lg text-shell-ink-muted">
+        Every matter moves through the same seven stages — the real litigation SOP,
+        tracked as its own state machine, independent of who's assigned or what's
+        overdue. Nothing skips ahead without the record to justify it.
+      </p>
+    </div>
+
+    <div class="reveal relative mt-16">
+      <!-- Decorative connecting line — desktop only, purely visual -->
+      <svg
+        class="pointer-events-none absolute inset-x-0 top-[22px] hidden w-full md:block"
+        viewBox="0 0 1200 60"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <line x1="80" y1="6" x2="1120" y2="6" stroke="var(--color-shell-border)" stroke-width="1.5" />
+        <path
+          d="M 427 6 Q 600 46 773 6"
+          fill="none"
+          stroke="var(--color-accent)"
+          stroke-width="1.5"
+          stroke-dasharray="3 4"
+        />
+      </svg>
+
+      <ol class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+        {
+          stages.map((stage) => (
+            <li class="relative pl-6 md:pl-0 md:text-left">
+              <div class="mb-3 hidden h-3 w-3 rounded-full bg-accent md:block" />
+              <div class="absolute left-0 top-1 h-3 w-3 rounded-full bg-accent md:hidden" />
+              <span class="type-mono text-xs text-shell-ink-muted">{stage.n}</span>
+              <h3 class="mt-1 font-display text-base font-semibold text-shell-ink">{stage.name}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-shell-ink-muted">{stage.note}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <p class="reveal mt-10 border-t border-shell-border pt-6 text-sm text-shell-ink-muted">
+      Filed matters can skip straight to Research/Draft when a CNR isn't available yet —
+      the dashed line above is the one real branch in the sequence. Every other step is
+      strictly forward, or back with a reason recorded.
+    </p>
+  </div>
+</section>

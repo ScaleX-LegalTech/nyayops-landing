@@ -1,0 +1,78 @@
+---
+import Wordmark from './Wordmark.astro';
+
+const links = [
+  { href: '#product', label: 'Product' },
+  { href: '#how-it-works', label: 'How it works' },
+  { href: '#security', label: 'Security' },
+];
+const appUrl = 'https://workspace.nyayops.in';
+---
+
+<header class="sticky top-0 z-40 border-b border-shell-border bg-shell/95 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <Wordmark />
+
+    <nav class="hidden items-center gap-8 md:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-shell-ink-muted transition-colors hover:text-shell-ink"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden items-center gap-3 md:flex">
+      <a href={`${appUrl}/login`} class="text-sm font-medium text-shell-ink-muted transition-colors hover:text-shell-ink">
+        Sign in
+      </a>
+      <a
+        href={appUrl}
+        class="rounded-control bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+      >
+        Get started
+      </a>
+    </div>
+
+    <button
+      type="button"
+      data-nav-toggle
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label="Toggle menu"
+      class="grid size-10 place-items-center rounded-control text-shell-ink md:hidden"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="size-5">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+    </button>
+  </div>
+
+  <div
+    id="mobile-nav"
+    data-mobile-nav
+    data-open="false"
+    class="border-t border-shell-border bg-shell px-6 py-4 data-[open=false]:hidden md:hidden"
+  >
+    <nav class="flex flex-col gap-4">
+      {
+        links.map((link) => (
+          <a href={link.href} class="text-sm font-medium text-shell-ink-muted">
+            {link.label}
+          </a>
+        ))
+      }
+      <a href={`${appUrl}/login`} class="text-sm font-medium text-shell-ink-muted">Sign in</a>
+      <a
+        href={appUrl}
+        class="rounded-control bg-brand px-4 py-2 text-center text-sm font-semibold text-white"
+      >
+        Get started
+      </a>
+    </nav>
+  </div>
+</header>

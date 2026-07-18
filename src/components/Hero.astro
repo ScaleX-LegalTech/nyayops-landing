@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import casesShot from '../assets/screenshots/cases.png';
+
+const appUrl = 'https://workspace.nyayops.in';
+---
+
+<section class="relative overflow-hidden bg-shell">
+  <!-- Ledger dot-grid texture — quiet, not decoration-for-its-own-sake; echoes the
+       same dotted pattern already used on the app's own AuthLayout navy panel. -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.07]"
+    style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 22px 22px; color: var(--color-shell-ink);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto grid max-w-7xl gap-12 px-6 pb-20 pt-16 sm:pt-24 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-8 lg:pb-28 lg:pt-28 lg:pl-6 lg:pr-0">
+    <div class="reveal">
+      <h1 class="text-[clamp(2.5rem,5vw+1rem,4.25rem)] font-semibold leading-[1.05] text-shell-ink">
+        Every case,<br />accounted for.
+      </h1>
+      <p class="mt-6 max-w-lg text-lg leading-relaxed text-shell-ink-muted">
+        NyayOps is the system of record for legal-operations teams: one governed
+        workflow from intake to disposal, versioned documents, and an audit trail
+        that nothing slips past.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a
+          href={appUrl}
+          class="rounded-control bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+        >
+          Get started
+        </a>
+        <a
+          href="#how-it-works"
+          class="rounded-control border border-shell-border px-6 py-3 text-sm font-semibold text-shell-ink transition-colors hover:bg-shell-soft"
+        >
+          See how it works
+        </a>
+      </div>
+
+      <ul class="mt-10 flex flex-wrap gap-2">
+        <li class="rounded-control border border-shell-border px-3 py-1.5 text-xs font-medium text-shell-ink-muted">
+          Row-level tenant isolation
+        </li>
+        <li class="rounded-control border border-shell-border px-3 py-1.5 text-xs font-medium text-shell-ink-muted">
+          ClamAV-scanned uploads
+        </li>
+        <li class="rounded-control border border-shell-border px-3 py-1.5 text-xs font-medium text-shell-ink-muted">
+          Every action, audited
+        </li>
+      </ul>
+    </div>
+
+    <div class="reveal relative lg:-mr-24 xl:-mr-40">
+      <div class="rounded-card border border-shell-border bg-surface p-1.5 shadow-pop lg:-rotate-1">
+        <Image
+          src={casesShot}
+          alt="NyayOps case list showing filed matters with status and priority badges, each identified by a CS-#### case number"
+          class="rounded-[10px]"
+          widths={[640, 960, 1440, 1600]}
+          sizes="(min-width: 1280px) 900px, (min-width: 1024px) 720px, 90vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </div>
+</section>

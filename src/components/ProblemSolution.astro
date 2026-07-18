@@ -1,0 +1,47 @@
+---
+const rows = [
+  {
+    problem: 'A hearing date slips past because nobody owned the reminder.',
+    fix: 'Deadline sweeps run daily against every open matter — reminders go out before the date, not after it’s missed.',
+  },
+  {
+    problem: 'A document gets overwritten and the earlier version is gone.',
+    fix: 'Every upload is versioned and scanned before it’s trusted; nothing is silently replaced.',
+  },
+  {
+    problem: 'A case moves to “Approved” without the review actually happening.',
+    fix: 'Status changes run through a governed workflow — invalid transitions are rejected outright, not just discouraged.',
+  },
+];
+---
+
+<section id="product" class="bg-bg py-24 sm:py-32">
+  <div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+    <div class="reveal">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">
+        Casework doesn't fail loudly.
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-ink">
+        It fails quietly — a deadline missed by a day, a document overwritten, a
+        status nobody double-checked. By the time it's visible, it's already a
+        problem for the client.
+      </p>
+      <p class="mt-4 text-lg leading-relaxed text-ink">
+        NyayOps closes each gap with structure, not vigilance.
+      </p>
+    </div>
+
+    <div class="reveal divide-y divide-border border-y border-border">
+      {
+        rows.map((row) => (
+          <div class="grid gap-2 py-6 sm:grid-cols-2 sm:gap-8">
+            <p class="text-sm leading-relaxed text-ink">{row.problem}</p>
+            <p class="text-sm leading-relaxed text-ink">
+              <span class="text-accent-strong">→</span> {row.fix}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
