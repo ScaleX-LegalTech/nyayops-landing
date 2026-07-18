@@ -10,6 +10,35 @@ import '@fontsource/public-sans/700.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 
+// Preloaded so no text on the page swaps fonts after first paint. A partial
+// preload (just the hero weights) still let other weights swap in mid-scroll,
+// which is what caused the "scrolls up then snaps back" report: Chrome's
+// scroll anchoring compensates for the layout shift as fallback-font metrics
+// get replaced across many elements at once (Public Sans is the body font
+// nearly everywhere), and the compensation itself reads as a jump. Preloading
+// every weight actually imported below removes the swap entirely.
+import outfit500 from '@fontsource/outfit/files/outfit-latin-500-normal.woff2?url';
+import outfit600 from '@fontsource/outfit/files/outfit-latin-600-normal.woff2?url';
+import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
+import publicSans400 from '@fontsource/public-sans/files/public-sans-latin-400-normal.woff2?url';
+import publicSans500 from '@fontsource/public-sans/files/public-sans-latin-500-normal.woff2?url';
+import publicSans600 from '@fontsource/public-sans/files/public-sans-latin-600-normal.woff2?url';
+import publicSans700 from '@fontsource/public-sans/files/public-sans-latin-700-normal.woff2?url';
+import jetbrainsMono400 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url';
+import jetbrainsMono500 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2?url';
+
+const preloadFonts = [
+  outfit500,
+  outfit600,
+  outfit700,
+  publicSans400,
+  publicSans500,
+  publicSans600,
+  publicSans700,
+  jetbrainsMono400,
+  jetbrainsMono500,
+];
+
 interface Props {
   title?: string;
   description?: string;
@@ -26,11 +55,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <!doctype html>
 <html lang="en">
   <head>
+    <script is:inline>
+      // Chrome (and other browsers) restore the pre-refresh scroll position by
+      // default on reload, attempting the jump before layout has fully
+      // settled — the page briefly renders shorter than its final height, so
+      // the restore either clamps to the wrong spot or gets re-applied once
+      // layout catches up. Visually: refresh while scrolled, then scroll, and
+      // the page jumps back toward the old position before settling. Taking
+      // manual control and always starting at the top removes the whole class
+      // of bug — this is a single-page marketing site with no meaningful
+      // "resume where I left off" use case anyway.
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0F172A" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    {preloadFonts.map((href) => (
+      <link rel="preload" as="font" type="font/woff2" href={href} crossorigin />
+    ))}
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -46,25 +92,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <slot />
 
     <script>
-      const revealEls = document.querySelectorAll<HTMLElement>('.reveal');
-      if (revealEls.length && 'IntersectionObserver' in window) {
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                io.unobserve(entry.target);
-              }
-            }
+      import { animate, inView } from 'motion';
+
+      // Scroll-triggered section reveal, via `motion` (vanilla — no React/
+      // framework island). Replaced a hand-rolled IntersectionObserver ->
+      // CSS-class-toggle -> `@keyframes` pipeline that was a confirmed cause
+      // of a real scroll-jump bug (verified by removing it entirely and
+      // having the user confirm the jump was gone — see global.css's note on
+      // the now-unused `.reveal.is-visible` rule for the full story). Motion
+      // drives a WAAPI `animate()` per element directly, which the browser
+      // schedules more predictably than many simultaneous CSS `animation`
+      // starts competing with an active scroll gesture.
+      const reduceMotionForReveal = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotionForReveal) {
+        inView(
+          '.reveal',
+          (element) => {
+            animate(
+              element,
+              { opacity: [0, 1], y: [12, 0] },
+              { duration: 0.42, easing: [0.22, 1, 0.36, 1] },
+            );
           },
-          { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+          { margin: '0px 0px -8% 0px', amount: 0.15 },
         );
-        revealEls.forEach((el, i) => {
-          el.style.animationDelay = `${Math.min(i % 4, 3) * 60}ms`;
-          io.observe(el);
-        });
-      } else {
-        revealEls.forEach((el) => el.classList.add('is-visible'));
       }
 
       const navToggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
@@ -73,6 +124,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         const open = mobileNav?.dataset.open === 'true';
         if (mobileNav) mobileNav.dataset.open = open ? 'false' : 'true';
         navToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+
+      // Nav starts transparent (blends into the dark hero); gains a solid bar
+      // once scrolled past it, so it stays readable over lighter sections below.
+      const nav = document.querySelector<HTMLElement>('[data-nav]');
+      if (nav) {
+        const setScrolled = () => {
+          nav.dataset.scrolled = window.scrollY > 40 ? 'true' : 'false';
+        };
+        setScrolled();
+        window.addEventListener('scroll', setScrolled, { passive: true });
+      }
+
+      // Smooth-scroll only for explicit anchor-link clicks (Product/How it
+      // works/Security nav links, "See how it works"), not as a blanket
+      // `html { scroll-behavior: smooth }` — that global switch was
+      // intercepting ordinary fast wheel/trackpad scrolling too, and Chrome
+      // queuing/overlapping a smooth-scroll animation per wheel tick is what
+      // produced the "scrolls past, then snaps back" glitch.
+      const reduceMotionForScroll = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const id = link.getAttribute('href')?.slice(1);
+          const target = id ? document.getElementById(id) : null;
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduceMotionForScroll ? 'auto' : 'smooth', block: 'start' });
+        });
       });
     </script>
   </body>

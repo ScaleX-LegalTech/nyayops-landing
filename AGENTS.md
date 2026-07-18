@@ -32,7 +32,8 @@ automated gate. If a test suite or linter is added later, record it here.
   `HowItWorks.astro`, etc.), assembled in `index.astro`. `Wordmark.astro` and `Nav.astro` are
   shared chrome.
 - `src/layouts/Layout.astro` — HTML shell: SEO meta/OG tags, self-hosted font imports, and the
-  page-wide `<script>` (IntersectionObserver-driven `.reveal` animation + mobile nav toggle).
+  page-wide `<script>` (`.reveal` scroll animation via `motion`'s `inView`/`animate` + mobile nav
+  toggle + nav scroll-state + anchor-link smooth scroll + scroll-restoration override).
 - `src/styles/tokens.css` — **ported verbatim** from `frontend/src/tokens.css` (the "Ledger Blue"
   OKLCH palette). If the brand palette changes, update `frontend/src/tokens.css` first and mirror
   the change here — this file has no other source of truth.
@@ -62,12 +63,53 @@ automated gate. If a test suite or linter is added later, record it here.
   only** (mirrors `frontend/src/components/layout/Wordmark.tsx`'s own constraint). Pass
   `onLight` when placing it on a white/near-white background (e.g. `Footer.astro`) — the
   unguarded default is a near-invisible white-on-white bug, not a style choice.
-- **`.reveal` must never gate content visibility.** Content is visible by default
-  (`opacity` unset); `.reveal.is-visible` (added by the `IntersectionObserver` in
-  `Layout.astro`) layers a fade-up animation on top. Don't reintroduce an
-  `opacity: 0`-until-JS default — full-page/headless captures and paused-tab renders don't
-  reliably dispatch scroll/intersection events, so gated sections ship visually blank (this
-  happened once during the initial build; keep the fix).
+- **`.reveal` must never gate content visibility.** Content is visible by default (`opacity`
+  unset in CSS); the fade-up-on-scroll-into-view effect is layered on top via `motion`'s
+  `inView`/`animate` in `Layout.astro` (WAAPI, not a CSS class toggle — see below for why). Don't
+  set `.reveal { opacity: 0 }` anywhere — full-page/headless captures and paused-tab renders don't
+  reliably fire the JS that would bring it back to 1, so gated sections would ship visually blank
+  (happened once during the initial build; keep the fix).
+- **`.reveal` uses `motion` (the vanilla `inView`/`animate` package, not framer-motion/React — no
+  framework island), not a hand-rolled `IntersectionObserver` + CSS-class-toggle +
+  `@keyframes`.** The original hand-rolled version was a confirmed cause of a real scroll-jump bug
+  (fast scroll -> page briefly jumps ~1 viewport, then corrects) — root-caused by removing the
+  whole reveal system and having the user confirm the jump was gone, then reintroducing it via
+  `motion` instead. Chrome DevTools' Layout Shift Regions showed zero shift flashes throughout
+  (ruling out CLS/reflow); the working theory is a compositor-level race — many `.reveal` elements
+  crossing their intersection threshold in the same scroll gesture each spinning up a fresh CSS
+  `animation` layer at once, desyncing the compositor's independent scroll-position thread from
+  main-thread paint. `motion`'s `animate()` schedules a WAAPI animation per element directly
+  instead, which the browser handles more predictably under concurrent-start conditions. If this
+  regresses: don't go back to IntersectionObserver+classList; try native
+  `animation-timeline: view()` (zero JS, runs purely on the compositor, structurally can't have
+  this race) before re-introducing any JS-driven trigger. Also: **verify any fix here with a real
+  browser scroll, not synthetic/automated wheel events** — Playwright's `mouse.wheel()` (discrete
+  jumps, small-delta trackpad-style, and momentum coast-down were all tried) never reproduced this
+  bug once, only an actual user session did.
+- **Never set `html { scroll-behavior: smooth }` globally.** It intercepts *all* scrolling, not
+  just anchor-link navigation — on fast wheel/trackpad input, Chrome queues/overlaps a
+  smooth-scroll animation per wheel tick, which can read as the page overshooting and snapping
+  back. (This turned out not to be the actual cause of the scroll-jump bug above, but it's a
+  correctness issue in its own right — leaving it removed.) Smooth-scroll for the nav/hero anchor
+  links is implemented in `Layout.astro` instead: a scoped `click` handler on `a[href^="#"]` calls
+  `target.scrollIntoView({ behavior: 'smooth' })` per-click, which doesn't fight with ordinary
+  scroll input because it's a one-shot JS call, not a persistent CSS mode.
+- `history.scrollRestoration = 'manual'` is set synchronously at the top of `<head>` in
+  `Layout.astro`, so refreshing never restores a stale pre-refresh scroll position — this is a
+  single-page site with no meaningful "resume where I left off" case. (Also not the cause of the
+  scroll-jump bug above, but correct to keep regardless.)
+- Hero's decorative particles/glow blobs pause via `animation-play-state` (an
+  `IntersectionObserver` on the `<section data-hero>` toggles `data-in-view`) the instant Hero
+  scrolls out of view — they were previously animating unconditionally forever, which is wasted
+  compositor work for content nobody can see. `Nav.astro`'s scrolled state (`data-scrolled`) uses
+  a solid `bg-shell`, not `bg-shell/95 backdrop-blur` — toggling `backdrop-filter` on a
+  `position: fixed` element mid-scroll is a separately well-documented Chromium jank source, worth
+  avoiding even though it wasn't confirmed as this bug's cause either.
+- Every `@fontsource` weight actually imported in `Layout.astro` is preloaded (see the
+  `preloadFonts` array) — a partial preload (just the hero's weights) still let other weights
+  swap in after first paint, which contributed to visible layout jitter (Public Sans is the body
+  font almost everywhere, so its swap reflows most of the page at once). Keep this list in sync
+  if a new weight is imported.
 - CTAs point to `https://workspace.nyayops.in` (dashboard login/app) — hardcoded, no env var,
   since this is a fully static site with no build-time config surface today.
 - `astro.config.mjs`'s `site: 'https://nyayops.in'` feeds the canonical URL, OG tags, and the

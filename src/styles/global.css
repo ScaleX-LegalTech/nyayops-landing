@@ -34,7 +34,6 @@
   html {
     -webkit-text-size-adjust: 100%;
     color-scheme: light;
-    scroll-behavior: smooth;
   }
 
   body {
@@ -79,25 +78,22 @@
 }
 
 @layer utilities {
-  /* Staggered fade-up for section reveals. Content is visible by default always —
-     the animation is a pure enhancement layered on top when JS adds .is-visible via
-     IntersectionObserver. Never gate visibility on the class: full-page/headless
-     captures and paused-tab renders don't dispatch scroll/intersection events, so a
-     opacity:0-until-JS default would ship those sections permanently blank. */
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .reveal.is-visible {
-    animation: rise 0.42s var(--ease-out-quint);
-  }
+  /* `.reveal` elements are visible by default (opacity unset here on
+     purpose) — the fade-up-on-scroll-into-view effect is applied in
+     Layout.astro via `motion`'s `inView`/`animate` (WAAPI), not a CSS class
+     toggle. An earlier hand-rolled IntersectionObserver -> CSS-class-toggle
+     -> `@keyframes` version of this was a confirmed cause of a real
+     scroll-jump bug (fast scroll -> page briefly jumps ~1 viewport, then
+     corrects) — verified by removing it and having the user confirm the jump
+     was gone. Chrome DevTools' Layout Shift Regions showed zero shift
+     flashes throughout, ruling out CLS/reflow as the mechanism; the working
+     theory is a compositor-level race — many `.reveal` elements crossing
+     their IntersectionObserver threshold in the same scroll gesture each
+     spinning up a fresh CSS `animation` layer at once, desyncing the
+     compositor's independent scroll-position thread from main-thread paint.
+     If touching this again: re-verify with a real browser scroll, not
+     synthetic/automated wheel events — those never reproduced the bug
+     either, only an actual user session did. */
 
   .type-mono {
     font-family: var(--font-mono);
@@ -125,9 +121,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
