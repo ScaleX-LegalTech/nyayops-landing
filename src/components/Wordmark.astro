@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import logoIcon from '../assets/brand/logo-icon.png';
+
 interface Props {
   size?: 'sm' | 'lg';
   /** Footer sits on the white surface, not the navy shell — Wordmark's default
@@ -8,19 +11,13 @@ interface Props {
 }
 const { size = 'sm', onLight = false } = Astro.props;
 const badge = size === 'lg' ? 'size-11' : 'size-9';
-const icon = size === 'lg' ? 'size-6' : 'size-5';
+const icon = size === 'lg' ? 'size-7' : 'size-6';
 const text = size === 'lg' ? 'text-2xl' : 'text-xl';
 ---
 
 <a href="/" class="flex shrink-0 items-center gap-2.5" aria-label="NyayOps home">
-  <span class:list={['grid shrink-0 place-items-center rounded-control bg-accent/15 text-accent', badge]}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class:list={[icon]}>
-      <path d="m16.5 15 2.25-6 2.25 6c-.65.49-1.44.75-2.25.75s-1.6-.26-2.25-.75Z"/>
-      <path d="m3 15 2.25-6L7.5 15c-.65.49-1.44.75-2.25.75S3.65 15.49 3 15Z"/>
-      <path d="M6.75 18.75h10.5"/>
-      <path d="M12 4.5v14.25"/>
-      <path d="M4.5 6.75h1.5c1.5 0 3.75-.75 6-1.5 2.25.75 4.5 1.5 6 1.5h1.5"/>
-    </svg>
+  <span class:list={['grid shrink-0 place-items-center rounded-control bg-accent/15', badge]}>
+    <Image src={logoIcon} alt="" class:list={['object-contain', icon]} widths={[28, 56]} sizes="28px" />
   </span>
   <span class:list={['font-display font-semibold', text, onLight ? 'text-ink' : 'text-shell-ink']}>
     Nyay<span class:list={[onLight ? 'text-brand' : 'text-accent']}>Ops</span>

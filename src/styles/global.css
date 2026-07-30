@@ -39,7 +39,12 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background-color: var(--color-bg);
+    /* Matches the closing section's dark shell, not the page's light bg —
+       every mid-page section paints its own background regardless, but on
+       tall viewports where content is shorter than the screen, this is what
+       shows past the last element. Dark keeps the hero-to-footer bookends
+       flush instead of a light strip appearing under the dark footer. */
+    background-color: var(--color-shell);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-synthesis-weight: none;

@@ -1,44 +1,62 @@
 ---
 const rows = [
   {
-    problem: 'A hearing date slips past because nobody owned the reminder.',
-    fix: 'Deadline sweeps run daily against every open matter — reminders go out before the date, not after it’s missed.',
+    problemTitle: 'A deadline without ownership',
+    problem: 'A hearing date approaches. Nobody knows who is responsible.',
+    fixTitle: 'Every deadline has ownership',
+    fix: 'Assigned teams, reminders, and clear next steps.',
   },
   {
-    problem: 'A document gets overwritten and the earlier version is gone.',
-    fix: 'Every upload is versioned and scanned before it’s trusted; nothing is silently replaced.',
+    problemTitle: 'A document without history',
+    problem: 'A version changes. Context disappears.',
+    fixTitle: 'Every document stays connected',
+    fix: 'Complete history, version control, and traceability.',
   },
   {
-    problem: 'A case moves to “Approved” without the review actually happening.',
-    fix: 'Status changes run through a governed workflow — invalid transitions are rejected outright, not just discouraged.',
+    problemTitle: 'A workflow without control',
+    problem: 'Work moves forward without proper review.',
+    fixTitle: 'Every step follows structure',
+    fix: 'Clear approvals, ownership, and progress tracking.',
   },
 ];
 ---
 
-<section id="product" class="bg-bg py-24 sm:py-32">
-  <div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+<section id="product" class="bg-bg py-20 sm:py-28">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:items-start">
     <div class="reveal">
       <h2 class="text-3xl font-semibold text-ink sm:text-4xl">
-        Casework doesn't fail loudly.
+        Every matter has a story,<br />keep every detail connected.
       </h2>
       <p class="mt-5 text-lg leading-relaxed text-ink">
-        It fails quietly — a deadline missed by a day, a document overwritten, a
-        status nobody double-checked. By the time it's visible, it's already a
-        problem for the client.
+        A legal matter is built from hundreds of decisions, documents,
+        deadlines, and people. Small gaps become costly problems when teams
+        lose visibility.
       </p>
       <p class="mt-4 text-lg leading-relaxed text-ink">
-        NyayOps closes each gap with structure, not vigilance.
+        NyayOps brings structure, accountability, and intelligence to every
+        matter.
       </p>
     </div>
 
-    <div class="reveal divide-y divide-border border-y border-border">
+    <div class="flex flex-col gap-4">
       {
         rows.map((row) => (
-          <div class="grid gap-2 py-6 sm:grid-cols-2 sm:gap-8">
-            <p class="text-sm leading-relaxed text-ink">{row.problem}</p>
-            <p class="text-sm leading-relaxed text-ink">
-              <span class="text-accent-strong">→</span> {row.fix}
-            </p>
+          <div class="reveal grid items-stretch overflow-hidden rounded-card border border-border sm:grid-cols-[1fr_auto_1fr]">
+            <div class="bg-surface p-5">
+              <p class="text-sm font-semibold text-ink">{row.problemTitle}</p>
+              <p class="mt-1 text-xs leading-relaxed text-ink-muted">{row.problem}</p>
+            </div>
+
+            <div class="flex items-center justify-center border-t border-border bg-surface py-2 sm:border-t-0 sm:border-x sm:px-4 sm:py-0" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="size-4 shrink-0 rotate-90 text-accent-strong sm:rotate-0">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </div>
+
+            <div class="border-t border-brand bg-brand/[0.06] p-5 sm:border-t-0">
+              <p class="text-sm font-semibold text-ink">{row.fixTitle}</p>
+              <p class="mt-1 text-xs leading-relaxed text-ink-muted">{row.fix}</p>
+            </div>
           </div>
         ))
       }

@@ -1,0 +1,40 @@
+---
+const points = [
+  {
+    n: '01',
+    title: 'Official court records, connected',
+    body: 'Case information pulled directly from court sources using CNR — no manual re-entry.',
+  },
+  {
+    n: '02',
+    title: 'Cause lists matched automatically',
+    body: 'Daily cause lists are matched with active matters, so important updates never get missed.',
+  },
+  {
+    n: '03',
+    title: 'Every hearing, one calendar',
+    body: 'Court dates, cause lists, and deadlines stay connected in one place.',
+  },
+];
+---
+
+<section id="court-data" class="bg-bg py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Court intelligence, built into every matter.</h2>
+      <p class="mt-4 text-lg text-ink-muted">Stop switching between portals and spreadsheets. NyayOps keeps court updates connected to your workflow.</p>
+    </div>
+
+    <div class="mt-16 grid gap-8 sm:grid-cols-3">
+      {
+        points.map((p) => (
+          <div class="reveal border-t-2 border-brand pt-5">
+            <span class="type-mono text-sm font-semibold text-brand-strong">{p.n}</span>
+            <h3 class="font-display mt-3 text-xl font-semibold text-ink">{p.title}</h3>
+            <p class="mt-2 text-base leading-relaxed text-ink-muted">{p.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

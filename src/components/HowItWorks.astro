@@ -1,71 +1,149 @@
 ---
-interface Stage {
+interface Step {
   n: string;
   name: string;
-  note: string;
+  detail?: string;
 }
 
-const stages: Stage[] = [
-  { n: '01', name: 'Collection', note: 'Matter opened, source documents gathered.' },
-  { n: '02', name: 'Scrutiny', note: 'Checked for completeness before it goes anywhere.' },
-  { n: '03', name: 'Filed', note: 'Lodged with the court — a gated stage, can’t be skipped.' },
-  { n: '04', name: 'CNR Linked', note: 'Tied to its official case record.' },
-  { n: '05', name: 'Research / Draft', note: 'Briefs and arguments prepared.' },
-  { n: '06', name: 'Hearing', note: 'Every listed date tracked to deadline.' },
-  { n: '07', name: 'Disposed', note: 'Closed, full record intact.' },
+const steps: Step[] = [
+  { n: '01', name: 'Ask NyayOps' },
+  { n: '02', name: 'Understands context', detail: 'Matter • Court • Documents • Team • Billing' },
+  { n: '03', name: 'Prepares the action', detail: 'Assignment • Draft bill • Notify • Role change' },
+  { n: '04', name: 'Review & approval' },
+  { n: '05', name: 'Operations updated', detail: 'Audit trail' },
 ];
 ---
 
-<section id="how-it-works" class="bg-shell py-24 sm:py-32">
+<section id="how-it-works" class="bg-shell py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl">
       <h2 class="text-3xl font-semibold text-shell-ink sm:text-4xl">
-        One governed lifecycle, start to disposed.
+        From conversation to action.
       </h2>
       <p class="mt-4 text-lg text-shell-ink-muted">
-        Every matter moves through the same seven stages — the real litigation SOP,
-        tracked as its own state machine, independent of who's assigned or what's
-        overdue. Nothing skips ahead without the record to justify it.
+        Every request follows the same governed workflow — from understanding your
+        intent to updating your operations.
       </p>
     </div>
 
-    <div class="reveal relative mt-16">
-      <!-- Decorative connecting line — desktop only, purely visual -->
-      <svg
-        class="pointer-events-none absolute inset-x-0 top-[22px] hidden w-full md:block"
-        viewBox="0 0 1200 60"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <line x1="80" y1="6" x2="1120" y2="6" stroke="var(--color-shell-border)" stroke-width="1.5" />
-        <path
-          d="M 427 6 Q 600 46 773 6"
-          fill="none"
-          stroke="var(--color-accent)"
-          stroke-width="1.5"
-          stroke-dasharray="3 4"
-        />
-      </svg>
+    <ol class="reveal mt-16 flex flex-col sm:flex-row sm:items-start">
+      {
+        steps.map((step, i) => {
+          const isAi = step.n === '02' || step.n === '03';
+          const isFinal = step.n === '05';
+          const isLast = i === steps.length - 1;
+          return (
+            <>
+              <li class="flex items-stretch gap-4 sm:flex-1 sm:flex-col sm:items-center sm:text-center">
+                <div class="flex flex-col items-center sm:contents">
+                <div class="relative z-10 shrink-0 sm:mb-4">
+                  {isAi && (
+                    <span class="ai-node relative grid size-10 place-items-center rounded-full bg-accent-strong text-white shadow-[0_0_0_5px_var(--color-shell)]" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                        <path d="M9.5 3a3 3 0 0 0-3 3v.2A2.5 2.5 0 0 0 5 8.5v1a2.5 2.5 0 0 0-1 2v1a2.5 2.5 0 0 0 1 2v1A2.5 2.5 0 0 0 6.5 18v.2a3 3 0 0 0 3 2.8" />
+                        <path d="M14.5 3a3 3 0 0 1 3 3v.2A2.5 2.5 0 0 1 19 8.5v1a2.5 2.5 0 0 1 1 2v1a2.5 2.5 0 0 1-1 2v1a2.5 2.5 0 0 1-1.5 2.3v.2a3 3 0 0 1-3 2.8" />
+                        <path d="M9.5 3a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3" />
+                      </svg>
+                    </span>
+                  )}
+                  {step.n === '01' && (
+                    <span class="grid size-10 place-items-center rounded-full border border-shell-border bg-shell-surface text-shell-ink-muted shadow-[0_0_0_5px_var(--color-shell)]" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                        <path d="M12 19v3M8 22h8M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" />
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+                      </svg>
+                    </span>
+                  )}
+                  {step.n === '04' && (
+                    <span class="grid size-10 place-items-center rounded-full border border-shell-border bg-shell-surface text-shell-ink-muted shadow-[0_0_0_5px_var(--color-shell)]" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        <path d="M9.5 12l2 2 3.5-3.5" />
+                      </svg>
+                    </span>
+                  )}
+                  {isFinal && (
+                    <span class="grid size-10 place-items-center rounded-full bg-brand text-white shadow-[0_0_0_5px_var(--color-shell)]" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="size-4">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {!isLast && (
+                  <div class="relative mt-1 w-px flex-1 overflow-hidden bg-shell-border sm:hidden" aria-hidden="true">
+                    <span class="flow-dot-h absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-strong" />
+                  </div>
+                )}
+                </div>
 
-      <ol class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
-        {
-          stages.map((stage) => (
-            <li class="relative pl-6 md:pl-0 md:text-left">
-              <div class="mb-3 hidden h-3 w-3 rounded-full bg-accent md:block" />
-              <div class="absolute left-0 top-1 h-3 w-3 rounded-full bg-accent md:hidden" />
-              <span class="type-mono text-xs text-shell-ink-muted">{stage.n}</span>
-              <h3 class="mt-1 font-display text-base font-semibold text-shell-ink">{stage.name}</h3>
-              <p class="mt-1 text-sm leading-relaxed text-shell-ink-muted">{stage.note}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
+                <div class={!isLast ? 'pb-8 sm:pb-0' : ''}>
+                  <p class="type-mono text-xs text-shell-ink-muted">
+                    {step.n}
+                    {isAi && <span class="text-accent-strong"> · AI thinking</span>}
+                  </p>
+                  <h3 class="mt-1 font-display text-base font-semibold leading-snug text-shell-ink">{step.name}</h3>
+                  {step.detail && <p class="mt-1 text-xs leading-relaxed text-shell-ink-muted">{step.detail}</p>}
+                  {isAi && (
+                    <span class="mt-1.5 inline-flex items-center gap-1" aria-hidden="true">
+                      <span class="ai-dot size-1 rounded-full bg-accent-strong" />
+                      <span class="ai-dot size-1 rounded-full bg-accent-strong" />
+                      <span class="ai-dot size-1 rounded-full bg-accent-strong" />
+                    </span>
+                  )}
+                </div>
+              </li>
 
-    <p class="reveal mt-10 border-t border-shell-border pt-6 text-sm text-shell-ink-muted">
-      Filed matters can skip straight to Research/Draft when a CNR isn't available yet —
-      the dashed line above is the one real branch in the sequence. Every other step is
-      strictly forward, or back with a reason recorded.
-    </p>
+              {!isLast && (
+                <li class="hidden sm:mt-5 sm:flex sm:flex-1 sm:items-center" aria-hidden="true">
+                  <div class="relative h-px w-full overflow-hidden bg-shell-border">
+                    <span class="flow-dot-h absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-strong" />
+                  </div>
+                </li>
+              )}
+            </>
+          );
+        })
+      }
+    </ol>
   </div>
 </section>
+
+<style>
+  @keyframes ai-dot-bounce {
+    0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+    40% { opacity: 1; transform: translateY(-2px); }
+  }
+  .ai-dot { animation: ai-dot-bounce 1.2s ease-in-out infinite; }
+  .ai-dot:nth-child(2) { animation-delay: 0.15s; }
+  .ai-dot:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes flow-travel-v {
+    0% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  @keyframes flow-travel-h {
+    0% { left: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+  .flow-dot-h { animation: flow-travel-v 1.6s linear infinite; }
+  @media (min-width: 640px) {
+    .flow-dot-h { animation-name: flow-travel-h; animation-duration: 3s; }
+  }
+
+  @keyframes ai-node-glow {
+    0%, 100% { box-shadow: 0 0 0 5px var(--color-shell), 0 0 0 5px color-mix(in srgb, var(--color-accent) 40%, transparent); }
+    50% { box-shadow: 0 0 0 5px var(--color-shell), 0 0 0 9px color-mix(in srgb, var(--color-accent) 0%, transparent); }
+  }
+  .ai-node { animation: ai-node-glow 2s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-dot { animation: none; opacity: 0.6; }
+    .flow-dot-h { animation: none; opacity: 0; }
+    .ai-node { animation: none; }
+  }
+</style>

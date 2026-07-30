@@ -1,14 +1,38 @@
 ---
+import Wordmark from './Wordmark.astro';
+
 const appUrl = 'https://workspace.nyayops.in';
+const year = new Date().getFullYear();
+const phone = '+917249832575';
+const phoneDisplay = '+91-7249832575';
+
+const columns = [
+  {
+    heading: 'Product',
+    links: [
+      { href: '#product', label: 'Platform' },
+      { href: '#ai-assistant', label: 'Ask NyayOps' },
+      { href: '#how-it-works', label: 'How it works' },
+    ],
+  },
+  {
+    heading: 'Resources',
+    links: [
+      { href: '#security', label: 'Security' },
+      { href: '#faq', label: 'FAQ' },
+      { href: `${appUrl}/login`, label: 'Sign in' },
+    ],
+  },
+];
 ---
 
-<section class="bg-shell py-20 sm:py-28">
-  <div class="reveal mx-auto max-w-3xl px-6 text-center">
+<section class="bg-shell">
+  <div class="reveal mx-auto max-w-3xl px-6 pt-20 text-center sm:pt-28">
     <h2 class="text-3xl font-semibold text-shell-ink sm:text-4xl">
-      Bring your casework onto the ledger.
+      Ready to modernize your legal operations?
     </h2>
     <p class="mt-4 text-lg text-shell-ink-muted">
-      One workspace for intake, review, documents, and the record of who did what.
+      Bring your matters, people, documents, court intelligence, and AI together in one secure workspace built for legal teams.
     </p>
     <div class="mt-8">
       <a
@@ -17,6 +41,55 @@ const appUrl = 'https://workspace.nyayops.in';
       >
         Get started
       </a>
+    </div>
+    <p class="mt-5 text-sm text-shell-ink-muted">
+      Questions? <a href="mailto:admin@nyayops.in" class="text-shell-ink underline underline-offset-2 hover:text-white">admin@nyayops.in</a>
+    </p>
+  </div>
+
+  <div class="mx-auto mt-20 max-w-6xl px-6 sm:mt-28">
+    <div class="border-t border-shell-border/40"></div>
+
+    <div class="grid grid-cols-1 gap-12 pb-20 pt-16 sm:grid-cols-2 sm:pb-28 sm:pt-20 lg:flex lg:items-start lg:justify-between lg:gap-8">
+      <div>
+        <Wordmark />
+        <p class="mt-4 max-w-xs text-base text-shell-ink">
+          The conversational workspace for legal operations.
+        </p>
+        <p class="mt-6 text-sm text-shell-ink-muted">
+          &copy; {year} NyayOps. All rights reserved.
+        </p>
+      </div>
+
+      {
+        columns.map((col) => (
+          <div>
+            <p class="type-mono text-xs uppercase tracking-wide text-shell-ink-muted">{col.heading}</p>
+            <nav class="mt-4 flex flex-col gap-3">
+              {col.links.map((link) => (
+                <a href={link.href} class="text-base text-shell-ink-muted transition-colors hover:text-shell-ink">
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        ))
+      }
+
+      <div>
+        <p class="type-mono text-xs uppercase tracking-wide text-shell-ink-muted">Contact</p>
+        <nav class="mt-4 flex flex-col gap-3">
+          <a href="mailto:admin@nyayops.in" class="text-base text-shell-ink-muted transition-colors hover:text-shell-ink">
+            admin@nyayops.in
+          </a>
+          <a href={`https://wa.me/${phone.replace('+', '')}`} class="text-base text-shell-ink-muted transition-colors hover:text-shell-ink">
+            WhatsApp
+          </a>
+          <a href={`tel:${phone}`} class="text-base text-shell-ink-muted transition-colors hover:text-shell-ink">
+            {phoneDisplay}
+          </a>
+        </nav>
+      </div>
     </div>
   </div>
 </section>

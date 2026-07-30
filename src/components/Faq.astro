@@ -1,0 +1,118 @@
+---
+const appUrl = 'https://workspace.nyayops.in';
+const phone = '+917249832575';
+const phoneDisplay = '+91-7249832575';
+
+const faqs = [
+  {
+    q: 'How does Ask NyayOps work?',
+    a: 'Ask NyayOps understands your matters, documents, court updates, workflows, and billing to answer questions and prepare operational actions through chat or voice.',
+  },
+  {
+    q: 'Can the AI make changes on its own?',
+    a: 'No. NyayOps can prepare actions like assignments, bills, and notifications, but important changes always require human approval.',
+  },
+  {
+    q: 'Which courts does NyayOps support?',
+    a: 'NyayOps integrates with supported court data sources to keep matters updated with case status, cause lists, and hearing information.',
+  },
+  {
+    q: 'Can we migrate our existing matters?',
+    a: 'Yes. We’ll help import your existing matters, documents, and operational data as part of your onboarding.',
+  },
+  {
+    q: 'Does NyayOps support multiple offices?',
+    a: 'Yes. Manage multiple branches, teams, and permissions from a single workspace while keeping operations organized.',
+  },
+  {
+    q: 'Can I use NyayOps as an independent lawyer?',
+    a: 'Absolutely. NyayOps is available for solo practitioners as well as growing and enterprise law firms.',
+  },
+  {
+    q: 'Is there a mobile app?',
+    a: 'Yes. Stay updated on matters, hearings, deadlines, tasks, and notifications from anywhere using the NyayOps mobile app.',
+  },
+  {
+    q: 'How is our firm’s information protected?',
+    a: 'Role-based permissions, governed workflows, and complete audit trails help keep your firm’s information secure and accountable.',
+  },
+  {
+    q: 'How is pricing structured?',
+    a: 'Pricing is tailored to your firm’s size, branches, and operational requirements. Get in touch for a personalized quote.',
+  },
+];
+---
+
+<section id="faq" class="bg-surface py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Frequently asked. Clearly answered.</h2>
+      <p class="mt-4 text-lg text-ink-muted">Everything you need to know before getting started with NyayOps.</p>
+    </div>
+
+    <div class="faq-accordion reveal mt-12 border-t border-border">
+      {
+        faqs.map((item) => (
+          <details class="faq-item group border-b border-border">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-display text-lg font-semibold text-ink">
+              {item.q}
+              <span class="relative grid size-6 shrink-0 place-items-center rounded-full border border-border text-ink-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="size-3 transition-transform duration-200 group-open:rotate-45">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+            </summary>
+            <p class="pb-5 pr-10 text-base leading-relaxed text-ink-muted">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+
+    <div class="reveal mt-14 border-t border-border pt-10 text-center">
+      <a
+        href={appUrl}
+        class="inline-block rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+      >
+        Get started
+      </a>
+
+      <p class="mt-6 text-sm text-ink-muted">or</p>
+
+      <p class="mt-6 font-display text-lg font-semibold text-ink">Still have a question?</p>
+      <p class="mt-1 text-base text-ink-muted">We're happy to help — reach us however's easiest.</p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={`https://wa.me/${phone.replace('+', '')}`}
+          class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+        >
+          WhatsApp us
+        </a>
+        <a
+          href={`tel:${phone}`}
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-brand/40"
+        >
+          Call {phoneDisplay}
+        </a>
+        <a
+          href="mailto:vaibhavrk665@gmail.com"
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-brand/40"
+        >
+          Email us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const items = document.querySelectorAll<HTMLDetailsElement>('.faq-item');
+  items.forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (item.open) {
+        items.forEach((other) => {
+          if (other !== item) other.open = false;
+        });
+      }
+    });
+  });
+</script>
