@@ -1,22 +1,4 @@
 ---
-const points = [
-  {
-    n: '01',
-    title: 'Understands your legal operations',
-    body: 'Answers come from matters, workflows, court updates, documents, and billing — not generic AI knowledge.',
-  },
-  {
-    n: '02',
-    title: 'Takes action responsibly',
-    body: 'NyayOps prepares operational actions for review instead of executing them automatically.',
-  },
-  {
-    n: '03',
-    title: 'Built for accountable teams',
-    body: 'Every important action follows your firm’s governance before it’s applied.',
-  },
-];
----
 
 <section id="ai-assistant" class="bg-surface py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
@@ -95,19 +77,12 @@ const points = [
       </div>
     </div>
 
-    <div class="reveal mt-16 grid overflow-hidden rounded-card border border-border sm:grid-cols-3 sm:divide-x sm:divide-border">
-      {
-        points.map((p, i) => (
-          <div class={`border-t border-border p-6 first:border-t-0 sm:border-t-0 ${i === 2 ? 'bg-brand/[0.06]' : ''}`}>
-            <span class="type-mono text-xs font-semibold text-brand-strong">{p.n}</span>
-            <h3 class="font-display mt-3 text-lg font-semibold text-ink">{p.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-ink-muted">{p.body}</p>
-          </div>
-        ))
-      }
-    </div>
+    <p class="reveal mt-16 border-t border-border pt-6 text-lg leading-relaxed text-ink">
+      NyayOps prepares actions — assignments, bills, notifications — for your team
+      to approve. It never acts on its own.
+    </p>
 
-    <p class="reveal mt-10 border-t border-border pt-6 text-sm text-ink-muted">
+    <p class="reveal mt-4 text-sm text-ink-muted">
       Chat or voice — the fastest way to manage legal operations.
     </p>
   </div>
