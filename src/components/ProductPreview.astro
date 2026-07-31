@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import calendarShot from '../assets/screenshots/calendar.png';
+---
+
+<section class="bg-bg py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-3xl">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
+        Every deadline. Every hearing.<br class="hidden sm:block" /> One calendar.
+      </h2>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">
+        Hearings, filing deadlines, bill due dates, reviews, and reminders stay
+        connected in one operational timeline — so nothing slips through the cracks.
+      </p>
+    </div>
+
+    <div class="reveal group mt-12 overflow-hidden rounded-card border border-border bg-surface p-2 shadow-pop transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-3">
+      <Image
+        src={calendarShot}
+        alt="NyayOps calendar showing hearings, deadlines, and payments across the month, with today's schedule alongside"
+        class="rounded-[8px] transition-transform duration-300 group-hover:scale-[1.015]"
+        widths={[640, 1000, 1600]}
+        sizes="(min-width: 1152px) 1152px, 92vw"
+      />
+    </div>
+  </div>
+</section>

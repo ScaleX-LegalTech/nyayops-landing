@@ -1,22 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-import calendarShot from '../assets/screenshots/calendar.png';
-
 const points = [
   {
     n: '01',
     title: 'Official court records, connected',
-    body: 'Case data pulled directly from court sources via CNR — no manual re-entry.',
+    body: 'Case information pulled directly from court sources using CNR — no manual re-entry.',
   },
   {
     n: '02',
     title: 'Cause lists matched automatically',
-    body: 'Daily cause lists auto-matched to your active matters.',
+    body: 'Daily cause lists are matched with active matters, so important updates never get missed.',
   },
   {
     n: '03',
     title: 'Every hearing, one calendar',
-    body: 'Hearings, deadlines, and cause lists — one calendar.',
+    body: 'Court dates, cause lists, and deadlines stay connected in one place.',
   },
 ];
 ---
@@ -24,8 +21,8 @@ const points = [
 <section id="court-data" class="bg-bg py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl">
-      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Court updates, matched automatically.</h2>
-      <p class="mt-4 text-lg text-ink-muted">No more switching between court portals and spreadsheets.</p>
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Court intelligence, built into every matter.</h2>
+      <p class="mt-4 text-lg text-ink-muted">Stop switching between portals and spreadsheets. NyayOps keeps court updates connected to your workflow.</p>
     </div>
 
     <div class="mt-16 grid gap-8 sm:grid-cols-3">
@@ -38,16 +35,6 @@ const points = [
           </div>
         ))
       }
-    </div>
-
-    <div class="reveal group mt-16 overflow-hidden rounded-card border border-border bg-surface p-2 shadow-pop transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-3">
-      <Image
-        src={calendarShot}
-        alt="NyayOps calendar showing hearings, deadlines, and payments across the month, with today's schedule alongside"
-        class="rounded-[8px] transition-transform duration-300 group-hover:scale-[1.015]"
-        widths={[640, 1000, 1600]}
-        sizes="(min-width: 1152px) 1152px, 92vw"
-      />
     </div>
   </div>
 </section>

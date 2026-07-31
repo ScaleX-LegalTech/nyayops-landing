@@ -1,0 +1,47 @@
+---
+const features = [
+  {
+    n: '01',
+    title: 'Intelligent workflows, not manual follow-ups',
+    body: 'NyayOps keeps matters moving with structured processes, ownership, and clear next actions.',
+  },
+  {
+    n: '02',
+    title: 'Documents that stay connected',
+    body: 'Every document remains linked to its matter, history, and decisions — preserving context over time.',
+  },
+  {
+    n: '03',
+    title: 'Teams aligned by design',
+    body: 'Assign responsibilities, manage access, and coordinate work across your organization.',
+  },
+  {
+    n: '04',
+    title: 'Every action has a record',
+    body: 'Complete operational history gives teams visibility into every decision and change.',
+  },
+];
+---
+
+<section class="bg-surface py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal max-w-2xl">
+      <h2 class="text-3xl font-semibold text-ink sm:text-4xl">Where legal operations become intelligent.</h2>
+      <p class="mt-4 text-lg text-ink-muted">NyayOps combines structured workflows with conversational AI to help teams manage matters, people, and information with confidence.</p>
+    </div>
+
+    <div class="mt-16 grid gap-5 sm:grid-cols-2">
+      {
+        features.map((f) => (
+          <div class="reveal rounded-card border border-border bg-bg p-6 transition-colors hover:border-brand/40">
+            <span class="type-mono grid size-9 place-items-center rounded-full bg-brand/10 text-xs text-brand-strong">
+              {f.n}
+            </span>
+            <h3 class="mt-5 font-display text-xl font-semibold text-ink sm:text-2xl">{f.title}</h3>
+            <p class="mt-2 text-base leading-relaxed text-ink-muted">{f.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
