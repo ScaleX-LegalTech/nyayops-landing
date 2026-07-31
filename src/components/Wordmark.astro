@@ -11,15 +11,15 @@ interface Props {
 }
 const { size = 'sm', onLight = false } = Astro.props;
 const badge = size === 'lg' ? 'size-11' : 'size-9';
-const icon = size === 'lg' ? 'size-7' : 'size-6';
-const text = size === 'lg' ? 'text-2xl' : 'text-xl';
+const icon = size === 'lg' ? 'size-8' : 'size-7';
+const text = size === 'lg' ? 'text-[26px]' : 'text-[22px]';
 ---
 
-<a href="/" class="flex shrink-0 items-center gap-2.5" aria-label="NyayOps home">
+<a href="/" class="flex shrink-0 items-center gap-2" aria-label="NyayOps home">
   <span class:list={['grid shrink-0 place-items-center rounded-control bg-accent/15', badge]}>
     <Image src={logoIcon} alt="" class:list={['object-contain', icon]} widths={[28, 56]} sizes="28px" />
   </span>
-  <span class:list={['font-display font-semibold', text, onLight ? 'text-ink' : 'text-shell-ink']}>
+  <span class:list={['font-display font-semibold leading-none', text, onLight ? 'text-ink' : 'text-white']}>
     Nyay<span class:list={[onLight ? 'text-brand' : 'text-accent']}>Ops</span>
   </span>
 </a>
